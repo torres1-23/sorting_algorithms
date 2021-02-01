@@ -8,23 +8,20 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *head = *list, *nxt = NULL, *tmp = NULL;
+	listint_t *head = *list, *nxt = NULL, *prv = NULL;
 
 	if (!list)
 		return;
 	nxt = head->next;
 	while (nxt)
 	{
-		if (head->n > nxt->n)
+		prv = nxt->prev;
+		while (prv && nxt->n < prv->n)
 		{
-			tmp = head;
-			swap_nodes(list, head, nxt);
-			head = tmp->prev;
-			nxt = tmp;
+			swap_nodes(list, &prv, nxt);
+			print_list(*list);
 		}
 		nxt = nxt->next;
-		head = head->next;
-		print_list(*list);
 	}
 }
 
@@ -35,33 +32,17 @@ void insertion_sort_list(listint_t **list)
  * @tmp: pointer to actual node.
  * @nxt: pointer to next node.
  */
-void swap_nodes(listint_t **head, listint_t *tmp, listint_t *nxt)
+void swap_nodes(listint_t **head, listint_t **tmp, listint_t *nxt)
 {
-	while (nxt && tmp->n > nxt->n)
-	{
-		if (nxt->next)
-		{
-			tmp->next = nxt->next;
-			nxt->next->prev = tmp;
-		}
-		else
-			tmp->next = NULL;
-		tmp = tmp->prev;
-		if (tmp)
-		{
-			nxt->prev = tmp;
-			nxt->next = tmp->next;
-			tmp->next = nxt;
-			nxt->next->prev = nxt;
-		}
-		else
-		{
-			tmp = *head,
-			nxt->next = tmp;
-			tmp->prev = nxt;
-			nxt->prev = NULL;
-			*head = nxt;
-			nxt = tmp->next;
-		}
-	}
+	(*tmp)->next = nxt->next;
+	if (nxt->next)
+		nxt->next->prev = *tmp;
+	nxt->prev = (*tmp)->prev;
+	nxt->next = *tmp;
+	if ((*tmp)->prev)
+		(*tmp)->prev->next = nxt;
+	else
+		*head = nxt;
+	(*tmp)->prev = nxt;
+	*tmp = nxt->prev;
 }
