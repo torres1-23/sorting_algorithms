@@ -48,20 +48,21 @@ void quick_sorted(int *array, int low, int high, size_t size)
  */
 int partition(int *array, int low, int high, size_t size)
 {
-	int pivot = array[high], i = low - 1, j;
+	int pivot = array[high], i = low, j;
 
-	for (j = low; j <= high - 1; j++)
+	for (j = low; j < high; j++)
 	{
 		if (array[j] <= pivot)
 		{
+			if (i != j)
+				swap(array, i, j);
 			i++;
-			swap(array, i, j);
 		}
 	}
 	if (i != j)
-		swap(array, i + 1, high);
+		swap(array, i, high);
 	print_array(array, size);
-	return (i + 1);
+	return (i);
 }
 
 /**
