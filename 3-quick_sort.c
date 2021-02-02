@@ -37,11 +37,14 @@ void quick_sorted(int *array, int low, int high, size_t size)
 
 /**
  * partition - divides an array in order to sort it
+ * according to Lomuto partition scheme.
  *
  * @array: pointer to array to sort.
  * @low: lowest index of array.
  * @high: highest idex of array.
  * @size: size of array.
+ *
+ * Return: Final partition index.
  */
 int partition(int *array, int low, int high, size_t size)
 {
